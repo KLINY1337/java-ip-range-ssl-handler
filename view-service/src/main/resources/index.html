@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index page</title>
+</head>
+<body>
+<form id="ipForm" method="post">
+    <label for="ipInput">IP Address Range:</label>
+    <input type="text" id="ipInput" name="ipInput" placeholder="Enter IP range with mask (e.g., 51.38.24.0/24)" required>
+    <input type="text" id="threadsAmount" name="threadsAmount" placeholder="Enter amount of threads" required>
+    <br><br>
+    <button type="button" onclick="sendPostRequest()">Submit</button>
+</form>
+
+<script>
+    function sendPostRequest() {
+        let ipInput = document.getElementById('ipInput').value;
+        let threadsAmount = document.getElementById('threadsAmount').value;
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:8080/handle", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log(xhr.responseText);
+            }
+        };
+        xhr.send(JSON.stringify(
+            {
+                "ipRange": ipInput,
+                "threadsAmount": threadsAmount}
+            ));
+    }
+</script>
+</body>
+</html>
